@@ -3,6 +3,7 @@
 use App\Http\Controllers\LogDomainController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
