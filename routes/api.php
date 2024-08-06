@@ -16,12 +16,14 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::middleware('auth:sanctum', 'auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['middleware' => 'cors'], function () {
-    Route::get('login', [AuthController::class, 'auth']);
-    Route::get('public-post-list', [PostController::class, 'postList']);
-});
+Route::post('/login', [AuthController::class, 'auth']);
+Route::get('public-post-list', [PostController::class, 'postList']);
+
+// Route::group(['middleware' => 'cors'], function () {
+    
+// });
 
