@@ -23,7 +23,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/login', [AuthController::class, 'auth']);
 Route::get('public-post-list', [PostController::class, 'postList']);
 
-// Route::group(['middleware' => 'cors'], function () {
-    
-// });
 
