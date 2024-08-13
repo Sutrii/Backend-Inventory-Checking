@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BarangMasukController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,5 +23,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/login', [AuthController::class, 'auth']);
 Route::get('public-post-list', [PostController::class, 'postList']);
+Route::get('/barang-masuk', [BarangMasukController::class, 'index']);
+Route::post('/barang-masuk', [BarangMasukController::class, 'store']);
 
 
