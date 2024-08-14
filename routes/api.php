@@ -6,6 +6,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BarangMasukController;
 use App\Http\Controllers\BarangKeluarController;
+use App\Http\Controllers\BarangPinjamanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,4 +34,6 @@ Route::post('/barang-masuk', [BarangMasukController::class, 'store']);
 Route::get('/barang-keluar', [BarangKeluarController::class, 'index']);
 Route::post('/barang-keluar', [BarangKeluarController::class, 'store']);
 
-
+//Barang-Pinjaman
+Route::get('/barang-pinjaman', [BarangPinjamanController::class, 'index']);
+Route::post('/barang-pinjaman', [BarangPinjamanController::class, 'store']);

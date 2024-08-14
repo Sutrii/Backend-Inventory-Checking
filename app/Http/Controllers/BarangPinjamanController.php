@@ -7,59 +7,41 @@ use Illuminate\Http\Request;
 
 class BarangPinjamanController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        return response()->json(BarangPinjaman::all());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
-    {
-        //
-    }
+{
+    try {
+        $validated = $request->validate([
+            'nama_barang' => 'required|string',
+            'tipe_barang' => 'required|string',
+            'kualitas' => 'required|string',
+            'tanggal' => 'required|date',
+            'sn' => 'required|string',
+            'jumlah' => 'required|integer',
+            'satuan' => 'required|string',
+            'keterangan' => 'required|string',
+            'lokasi' => 'required|string',
+            'picture' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'work_unit' => 'required|string',
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(BarangPinjaman $barangPinjaman)
-    {
-        //
-    }
+        // Handle file upload
+        if ($request->hasFile('picture')) {
+            $picturePath = $request->file('picture')->store('pictures', 'public');
+            $validated['picture'] = $picturePath;
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(BarangPinjaman $barangPinjaman)
-    {
-        //
-    }
+        $barangPinjaman = BarangPinjaman::create($validated);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, BarangPinjaman $barangPinjaman)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(BarangPinjaman $barangPinjaman)
-    {
-        //
+        return response()->json($barangPinjaman, 201);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
     }
 }
+
+}
+
