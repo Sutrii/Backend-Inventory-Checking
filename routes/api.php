@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BarangMasukController;
+use App\Http\Controllers\BarangKeluarController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,5 +28,9 @@ Route::get('public-post-list', [PostController::class, 'postList']);
 //Barang-Masuk
 Route::get('/barang-masuk', [BarangMasukController::class, 'index']);
 Route::post('/barang-masuk', [BarangMasukController::class, 'store']);
+
+//Barang-Keluar
+Route::get('/barang-keluar', [BarangKeluarController::class, 'index']);
+Route::post('/barang-keluar', [BarangKeluarController::class, 'store']);
 
 
