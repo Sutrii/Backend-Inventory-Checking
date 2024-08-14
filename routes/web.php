@@ -44,6 +44,9 @@ Route::group(['middleware' => 'ensure.frontend.requests.are.stateful'], function
     Route::get('/barang-pinjaman', [BarangPinjamanController::class, 'index']);
     Route::post('/barang-pinjaman', [BarangPinjamanController::class, 'store']);
 
+    Route::get('/barang-rusak', [BarangRusakController::class, 'index']);
+    Route::post('/barang-rusak', [BarangRusakController::class, 'store']);
+
     Route::post('/login', [LoginController::class, 'login'])->name('login');
 });
 

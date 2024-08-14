@@ -7,6 +7,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BarangMasukController;
 use App\Http\Controllers\BarangKeluarController;
 use App\Http\Controllers\BarangPinjamanController;
+use App\Http\Controllers\BarangRusakController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,3 +38,7 @@ Route::post('/barang-keluar', [BarangKeluarController::class, 'store']);
 //Barang-Pinjaman
 Route::get('/barang-pinjaman', [BarangPinjamanController::class, 'index']);
 Route::post('/barang-pinjaman', [BarangPinjamanController::class, 'store']);
+
+//Barang-Rusak
+Route::get('/barang-rusak', [BarangRusakController::class, 'index']);
+Route::post('/barang-rusak', [BarangRusakController::class, 'store']);
