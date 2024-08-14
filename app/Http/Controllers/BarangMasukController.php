@@ -13,7 +13,8 @@ class BarangMasukController extends Controller
     }
 
     public function store(Request $request)
-    {
+{
+    try {
         $validated = $request->validate([
             'nama_barang' => 'required|string',
             'tipe_barang' => 'required|string',
@@ -28,9 +29,19 @@ class BarangMasukController extends Controller
             'work_unit' => 'required|string',
         ]);
 
+        // Handle file upload
+        if ($request->hasFile('picture')) {
+            $picturePath = $request->file('picture')->store('pictures', 'public');
+            $validated['picture'] = $picturePath;
+        }
+
         $barangMasuk = BarangMasuk::create($validated);
 
         return response()->json($barangMasuk, 201);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
     }
+}
+
 }
 

@@ -35,6 +35,8 @@ Route::get('/dashboard', function () {
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 Route::group(['middleware' => 'ensure.frontend.requests.are.stateful'], function () {
     Route::post('/login', [AuthController::class, 'auth']);
+    Route::get('/barang-masuk', [BarangMasukController::class, 'index']);
+    Route::post('/barang-masuk', [BarangMasukController::class, 'store']);
     Route::post('/login', [LoginController::class, 'login'])->name('login');
 });
 

@@ -23,10 +23,10 @@ class DatabaseSeeder extends Seeder
         User::factory()->count(1)->create();
 
         // Atau, jika Anda hanya ingin membuat pengguna tertentu
-        User::factory()->create([
-            'name' => 'Test',
-            'email' => 'test@example.com',
-            'password' => bcrypt('password'), // bcrypt untuk hashing password
-        ]);
+        // User::factory()->create([
+        //     'name' => 'Test',
+        //     'email' => 'test@example.com',
+        //     'password' => bcrypt('password'), // bcrypt untuk hashing password
+        // ]);
     }
 }

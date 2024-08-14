@@ -23,6 +23,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/login', [AuthController::class, 'auth']);
 Route::get('public-post-list', [PostController::class, 'postList']);
+
+//Barang-Masuk
 Route::get('/barang-masuk', [BarangMasukController::class, 'index']);
 Route::post('/barang-masuk', [BarangMasukController::class, 'store']);
 
