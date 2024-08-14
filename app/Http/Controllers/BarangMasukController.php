@@ -13,9 +13,10 @@ class BarangMasukController extends Controller
     }
 
     public function store(Request $request)
-{
+    {
     try {
         $validated = $request->validate([
+            'id' => 'required|integer',
             'nama_barang' => 'required|string',
             'tipe_barang' => 'required|string',
             'kualitas' => 'required|string',
@@ -41,7 +42,27 @@ class BarangMasukController extends Controller
     } catch (\Exception $e) {
         return response()->json(['error' => $e->getMessage()], 500);
     }
-}
+
+    }
+
+    public function show($id)
+    {
+        $barangMasuk = BarangMasuk::find($id);
+
+        if (!$barangMasuk) {
+            return response()->json(['message' => 'Data tidak ditemukan'], 404);
+        }
+
+        return response()->json($barangMasuk);
+    }
+    
+    public function destroy($id)
+    {
+        $barangMasuk = BarangMasuk::findOrFail($id);
+        $barangMasuk->delete();
+
+        return response()->json(['message' => 'Data berhasil dihapus'], 200);
+    }
 
 }
 

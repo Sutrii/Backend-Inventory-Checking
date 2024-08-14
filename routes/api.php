@@ -28,8 +28,13 @@ Route::post('/login', [AuthController::class, 'auth']);
 Route::get('public-post-list', [PostController::class, 'postList']);
 
 //Barang-Masuk
+Route::post('/login', [AuthController::class, 'auth']);
 Route::get('/barang-masuk', [BarangMasukController::class, 'index']);
 Route::post('/barang-masuk', [BarangMasukController::class, 'store']);
+Route::put('/barang-masuk/{id}', [BarangMasukController::class, 'update']);
+Route::delete('/barang-masuk/{id}', [BarangMasukController::class, 'destroy']);
+Route::get('/barang-masuk/{id}', [BarangMasukController::class, 'show']);
+
 
 //Barang-Keluar
 Route::get('/barang-keluar', [BarangKeluarController::class, 'index']);
