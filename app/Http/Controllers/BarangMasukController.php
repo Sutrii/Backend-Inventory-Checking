@@ -14,36 +14,38 @@ class BarangMasukController extends Controller
 
     public function store(Request $request)
     {
-    try {
-        $validated = $request->validate([
-            'id' => 'required|integer',
-            'nama_barang' => 'required|string',
-            'tipe_barang' => 'required|string',
-            'kualitas' => 'required|string',
-            'tanggal' => 'required|date',
-            'sn' => 'required|string',
-            'jumlah' => 'required|integer',
-            'satuan' => 'required|string',
-            'keterangan' => 'required|string',
-            'lokasi' => 'required|string',
-            'picture' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'work_unit' => 'required|string',
-        ]);
+        try {
+            $validated = $request->validate([
+                'nama_barang' => 'required|string',
+                'tipe_barang' => 'required|string',
+                'kualitas' => 'required|string',
+                'tanggal' => 'required|date',
+                'sn' => 'required|string',
+                'jumlah' => 'required|integer',
+                'satuan' => 'required|string',
+                'keterangan' => 'required|string',
+                'lokasi' => 'required|string',
+                'picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'work_unit' => 'required|string',
+            ]);
 
-        // Handle file upload
-        if ($request->hasFile('picture')) {
-            $picturePath = $request->file('picture')->store('pictures', 'public');
-            $validated['picture'] = $picturePath;
+            if ($request->hasFile('picture')) {
+                $file = $request->file('picture');
+                $fileName = time() . '_' . $file->getClientOriginalName(); // Get the original file name with a timestamp prefix
+                $filePath = $file->storeAs('public/pictures', $fileName); // Store in 'storage/app/public/pictures'
+                $validated['picture'] = $fileName; // Save only the file name in the database
+            } else {
+                $validated['picture'] = null; // Set picture to null if not provided
+            }
+
+            $barangMasuk = BarangMasuk::create($validated);
+
+            return response()->json($barangMasuk, 201);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
         }
-
-        $barangMasuk = BarangMasuk::create($validated);
-
-        return response()->json($barangMasuk, 201);
-    } catch (\Exception $e) {
-        return response()->json(['error' => $e->getMessage()], 500);
     }
 
-    }
 
     public function show($id)
     {
@@ -55,7 +57,7 @@ class BarangMasukController extends Controller
 
         return response()->json($barangMasuk);
     }
-    
+
     public function destroy($id)
     {
         $barangMasuk = BarangMasuk::findOrFail($id);
