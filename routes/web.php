@@ -10,6 +10,7 @@ use App\Http\Controllers\BarangKeluarController;
 use App\Http\Controllers\BarangMasukController;
 use App\Http\Controllers\BarangPinjamanController;
 use App\Http\Controllers\BarangRusakController;
+use App\Http\Controllers\InventoryItemController;
 use Inertia\Inertia;
 
 /*
@@ -50,6 +51,9 @@ Route::group(['middleware' => 'ensure.frontend.requests.are.stateful'], function
 
     Route::get('/barang-rusak', [BarangRusakController::class, 'index']);
     Route::post('/barang-rusak', [BarangRusakController::class, 'store']);
+
+    Route::get('/input-barang', [InventoryItemController::class, 'index']);
+    Route::post('/input-barang', [InventoryItemController::class, 'store']);
 
     Route::post('/login', [LoginController::class, 'login'])->name('login');
 });

@@ -10,7 +10,7 @@ class InventoryItem extends Model
     use HasFactory;
     protected $table = 'inventory_item';
     protected $fillable = [
-        'kategori_barang',
+        'kategori_input',
         'nama_barang',
         'tipe_barang',
         'kualitas',
