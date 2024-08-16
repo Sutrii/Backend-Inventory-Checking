@@ -51,3 +51,6 @@ Route::post('/barang-rusak', [BarangRusakController::class, 'store']);
 //Input-Barang
 Route::get('/input-barang', [InventoryItemController::class, 'index']);
 Route::post('/input-barang', [InventoryItemController::class, 'store']);
+Route::put('/input-barang/{id}', [InventoryItemController::class, 'update']);
+Route::delete('/input-barang/{id}', [InventoryItemController::class, 'destroy']);
+Route::get('/input-barang/{id}', [InventoryItemController::class, 'show']);

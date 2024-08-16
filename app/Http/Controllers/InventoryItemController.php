@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\InventoryItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class InventoryItemController extends Controller
 {
@@ -52,32 +53,45 @@ class InventoryItemController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(InventoryItem $inventoryItem)
+    public function update(Request $request, $id)
     {
-        //
+        try {
+            $data = $request->all();
+            $inventoryItem = InventoryItem::findOrFail($id);
+            $inventoryItem->update($data);
+            return response()->json(['message' => 'Data berhasil diperbarui'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Terjadi kesalahan saat memperbarui data!'], 500);
+        }
+    }
+
+    public function show($id)
+    {
+        $inventoryItem = InventoryItem::find($id);
+
+        if (!$inventoryItem) {
+            return response()->json(['message' => 'Data tidak ditemukan'], 404);
+        }
+
+        return response()->json($inventoryItem);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(InventoryItem $inventoryItem)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, InventoryItem $inventoryItem)
-    {
-        //
-    }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(InventoryItem $inventoryItem)
+    public function destroy($id)
     {
-        //
+        $inventoryItem = InventoryItem::findOrFail($id);
+        $inventoryItem->delete();
+
+        return response()->json(['message' => 'Data berhasil dihapus'], 200);
     }
 }
