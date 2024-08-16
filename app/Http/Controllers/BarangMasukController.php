@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\BarangMasuk;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BarangMasukController extends Controller
 {
@@ -46,7 +47,18 @@ class BarangMasukController extends Controller
         }
     }
 
-
+    public function update(Request $request, $id)
+    {
+        try {
+            $data = $request->all();
+            $barangMasuk = BarangMasuk::findOrFail($id);
+            $barangMasuk->update($data);
+            return response()->json(['message' => 'Data berhasil diperbarui'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Terjadi kesalahan saat memperbarui data!'], 500);
+        }
+    }
+    
     public function show($id)
     {
         $barangMasuk = BarangMasuk::find($id);

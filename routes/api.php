@@ -35,7 +35,6 @@ Route::put('/barang-masuk/{id}', [BarangMasukController::class, 'update']);
 Route::delete('/barang-masuk/{id}', [BarangMasukController::class, 'destroy']);
 Route::get('/barang-masuk/{id}', [BarangMasukController::class, 'show']);
 
-
 //Barang-Keluar
 Route::get('/barang-keluar', [BarangKeluarController::class, 'index']);
 Route::post('/barang-keluar', [BarangKeluarController::class, 'store']);
