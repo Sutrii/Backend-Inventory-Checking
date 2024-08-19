@@ -17,9 +17,11 @@ return new class extends Migration
             $table->string('nama_barang');
             $table->string('tipe_barang');
             $table->string('kualitas');
-            $table->date('tanggal');
+            $table->date('tanggal')->nullable();
             $table->date('tanggal_awal_pinjam')->nullable();
             $table->date('tanggal_akhir_pinjam')->nullable();
+            $table->string('nama_peminjam')->nullable();
+            $table->string('divisi_peminjam')->nullable();
             $table->string('sn')->unique();
             $table->integer('jumlah');
             $table->string('satuan');
