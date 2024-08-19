@@ -52,14 +52,25 @@ class InventoryItemController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function update(Request $request, $id)
     {
         try {
             $data = $request->all();
             $inventoryItem = InventoryItem::findOrFail($id);
+            // Update data
+            if ($request->hasFile('picture')) {
+                // Hapus gambar lama jika ada
+                if ($inventoryItem->picture) {
+                    Storage::delete('public/pictures/' . $inventoryItem->picture);
+                }
+                $file = $request->file('picture');
+                $fileName = time() . '_' . $file->getClientOriginalName();
+                $filePath = $file->storeAs('public/pictures', $fileName);
+                $data['picture'] = $fileName;
+            } else {
+                // Jangan update field picture jika file tidak ada
+                unset($data['picture']);
+            }
             $inventoryItem->update($data);
             return response()->json(['message' => 'Data berhasil diperbarui'], 200);
         } catch (\Exception $e) {
@@ -78,17 +89,6 @@ class InventoryItemController extends Controller
         return response()->json($inventoryItem);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-
-    /**
-     * Update the specified resource in storage.
-     */
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy($id)
     {
         $inventoryItem = InventoryItem::findOrFail($id);
