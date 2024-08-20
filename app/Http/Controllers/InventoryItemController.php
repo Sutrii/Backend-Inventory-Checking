@@ -56,27 +56,12 @@ class InventoryItemController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            \Log::info('Update Request Data:', $request->all());
             $data = $request->all();
             $inventoryItem = InventoryItem::findOrFail($id);
-
-            if ($request->hasFile('picture')) {
-                // Delete the old picture if it exists
-                if ($inventoryItem->picture) {
-                    Storage::delete('public/pictures/' . $inventoryItem->picture);
-                }
-                $file = $request->file('picture');
-                $fileName = time() . '_' . $file->getClientOriginalName();
-                $filePath = $file->storeAs('public/pictures', $fileName);
-                $data['picture'] = $fileName;
-            } else {
-                unset($data['picture']);
-            }
-
             $inventoryItem->update($data);
-            return response()->json(['message' => 'Data successfully updated'], 200);
+            return response()->json(['message' => 'Data berhasil diperbarui'], 200);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'An error occurred while updating data!'], 500);
+            return response()->json(['error' => 'Terjadi kesalahan saat memperbarui data!'], 500);
         }
     }
 
@@ -85,7 +70,7 @@ class InventoryItemController extends Controller
         $inventoryItem = InventoryItem::find($id);
 
         if (!$inventoryItem) {
-            return response()->json(['message' => 'Data not found'], 404);
+            return response()->json(['message' => 'Data tidak ditemukan'], 404);
         }
 
         return response()->json($inventoryItem);
@@ -94,13 +79,8 @@ class InventoryItemController extends Controller
     public function destroy($id)
     {
         $inventoryItem = InventoryItem::findOrFail($id);
-
-        // Delete the picture if it exists
-        if ($inventoryItem->picture) {
-            Storage::delete('public/pictures/' . $inventoryItem->picture);
-        }
-
         $inventoryItem->delete();
-        return response()->json(['message' => 'Data successfully deleted'], 200);
+
+        return response()->json(['message' => 'Data berhasil dihapus'], 200);
     }
 }
