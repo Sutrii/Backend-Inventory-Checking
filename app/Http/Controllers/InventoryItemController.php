@@ -38,6 +38,7 @@ class InventoryItemController extends Controller
             if ($request->hasFile('picture')) {
                 $file = $request->file('picture');
                 $fileName = time() . '_' . $file->getClientOriginalName(); // Get the original file name with a timestamp prefix
+                // Storage::disk('public/pictures')->put($fileName, file_get_contents($request->picture));
                 $filePath = $file->storeAs('public/pictures', $fileName); // Store in 'storage/app/public/pictures'
                 $validated['picture'] = $fileName; // Save only the file name in the database
             } else {
@@ -55,6 +56,7 @@ class InventoryItemController extends Controller
     public function update(Request $request, $id)
     {
         try {
+            \Log::info('Update Request Data:', $request->all());
             $data = $request->all();
             $inventoryItem = InventoryItem::findOrFail($id);
 
