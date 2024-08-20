@@ -57,9 +57,9 @@ class InventoryItemController extends Controller
         try {
             $data = $request->all();
             $inventoryItem = InventoryItem::findOrFail($id);
-            // Update data
+
             if ($request->hasFile('picture')) {
-                // Hapus gambar lama jika ada
+                // Delete the old picture if it exists
                 if ($inventoryItem->picture) {
                     Storage::delete('public/pictures/' . $inventoryItem->picture);
                 }
@@ -68,13 +68,13 @@ class InventoryItemController extends Controller
                 $filePath = $file->storeAs('public/pictures', $fileName);
                 $data['picture'] = $fileName;
             } else {
-                // Jangan update field picture jika file tidak ada
                 unset($data['picture']);
             }
+
             $inventoryItem->update($data);
-            return response()->json(['message' => 'Data berhasil diperbarui'], 200);
+            return response()->json(['message' => 'Data successfully updated'], 200);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Terjadi kesalahan saat memperbarui data!'], 500);
+            return response()->json(['error' => 'An error occurred while updating data!'], 500);
         }
     }
 
@@ -83,7 +83,7 @@ class InventoryItemController extends Controller
         $inventoryItem = InventoryItem::find($id);
 
         if (!$inventoryItem) {
-            return response()->json(['message' => 'Data tidak ditemukan'], 404);
+            return response()->json(['message' => 'Data not found'], 404);
         }
 
         return response()->json($inventoryItem);
@@ -92,8 +92,13 @@ class InventoryItemController extends Controller
     public function destroy($id)
     {
         $inventoryItem = InventoryItem::findOrFail($id);
-        $inventoryItem->delete();
 
-        return response()->json(['message' => 'Data berhasil dihapus'], 200);
+        // Delete the picture if it exists
+        if ($inventoryItem->picture) {
+            Storage::delete('public/pictures/' . $inventoryItem->picture);
+        }
+
+        $inventoryItem->delete();
+        return response()->json(['message' => 'Data successfully deleted'], 200);
     }
 }
