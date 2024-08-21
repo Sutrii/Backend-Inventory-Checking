@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\InventoryExport;
 use App\Models\InventoryItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 
 class InventoryItemController extends Controller
 {
@@ -82,5 +84,10 @@ class InventoryItemController extends Controller
         $inventoryItem->delete();
 
         return response()->json(['message' => 'Data berhasil dihapus'], 200);
+    }
+
+    public function export()
+    {
+        return Excel::download(new InventoryExport, 'inventory.xlsx');
     }
 }
