@@ -19,12 +19,14 @@ class InventoryItem extends Model
         'tanggal_akhir_pinjam',
         'divisi_peminjam',
         'nama_peminjam',
+        'tujuan_keluar',
         'sn',
         'jumlah',
         'satuan',
         'keterangan',
         'lokasi',
         'picture',
+        'bukti',
         'work_unit',
     ];
 }

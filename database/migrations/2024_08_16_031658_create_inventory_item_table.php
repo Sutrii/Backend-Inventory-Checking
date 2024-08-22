@@ -25,7 +25,8 @@ return new class extends Migration
             $table->string('sn')->unique();
             $table->integer('jumlah');
             $table->string('satuan');
-            $table->string('picture')->nullable(); 
+            $table->string('picture')->nullable();
+            $table->json('bukti')->nullable(); 
             $table->text('keterangan')->nullable();
             $table->text('work_unit');
             $table->string('lokasi'); 
