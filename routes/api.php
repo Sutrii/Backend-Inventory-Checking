@@ -55,3 +55,4 @@ Route::put('/input-barang/{id}', [InventoryItemController::class, 'update']);
 Route::delete('/input-barang/{id}', [InventoryItemController::class, 'destroy']);
 Route::get('/input-barang/{id}', [InventoryItemController::class, 'show']);
 Route::get('/inventory-export', [InventoryItemController::class, 'export']);
+
