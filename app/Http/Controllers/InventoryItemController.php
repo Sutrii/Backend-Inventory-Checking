@@ -57,6 +57,8 @@ class InventoryItemController extends Controller
                 'divisi_peminjam' => 'nullable|string',
                 'tipe_barang' => 'required|string',
                 'tujuan_keluar' => 'nullable|string',
+                'status_barang' => 'nullable|string',
+                'solusi_barang' => 'nullable|string',
                 'kualitas' => 'required|string',
                 'tanggal' => 'nullable|date',
                 'tanggal_awal_pinjam' => 'nullable|date',

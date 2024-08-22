@@ -28,5 +28,7 @@ class InventoryItem extends Model
         'picture',
         'bukti',
         'work_unit',
+        'status_barang',
+        'solusi_barang',
     ];
 }

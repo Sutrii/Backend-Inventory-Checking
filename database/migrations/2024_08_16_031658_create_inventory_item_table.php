@@ -22,6 +22,8 @@ return new class extends Migration
             $table->date('tanggal_akhir_pinjam')->nullable();
             $table->string('nama_peminjam')->nullable();
             $table->string('divisi_peminjam')->nullable();
+            $table->string('status_barang')->nullable();
+            $table->string('solusi_barang')->nullable();
             $table->string('sn')->unique();
             $table->integer('jumlah');
             $table->string('satuan');
