@@ -29,6 +29,6 @@ class InventoryItem extends Model
         'bukti',
         'work_unit',
         'status_barang',
-        'solusi_barang',
+        'solusi_barang'
     ];
 }

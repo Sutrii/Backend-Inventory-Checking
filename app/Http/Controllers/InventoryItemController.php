@@ -132,22 +132,18 @@ class InventoryItemController extends Controller
             // Jika ada file gambar yang diupload
             if ($request->hasFile('picture')) {
                 $file = $request->file('picture');
-                $fileName = $file->getClientOriginalName(); // Gunakan nama file asli
-                $filePath = $file->storeAs('public/pictures', $fileName); // Simpan file dengan nama asli
+                $fileName = time() . '_' . $file->getClientOriginalName(); // Gunakan nama file dengan timestamp
+                $filePath = $file->storeAs('public/pictures', $fileName); // Simpan file dengan nama yang unik
                 $data['picture'] = $fileName;
-            } else {
-                $data['picture'] = $inventoryItem->picture;
             }
-
-            // Jika ada file bukti yang diupload (single file)
+            
             if ($request->hasFile('bukti')) {
                 $file = $request->file('bukti');
-                $fileName = $file->getClientOriginalName(); // Gunakan nama file asli
-                $file->storeAs('public/bukti', $fileName); // Simpan file dengan nama asli
-                $data['bukti'] = $fileName; // Update field `bukti` dengan nama file asli
-            } else {
-                $data['bukti'] = $inventoryItem->bukti;
+                $fileName = time() . '_' . $file->getClientOriginalName(); // Gunakan nama file dengan timestamp
+                $file->storeAs('public/bukti', $fileName); // Simpan file dengan nama yang unik
+                $data['bukti'] = $fileName;
             }
+            
 
             $inventoryItem->update($data);
             \Log::info('Updated Data:', $inventoryItem->toArray());

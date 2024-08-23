@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('divisi_peminjam')->nullable();
             $table->string('status_barang')->nullable();
             $table->string('solusi_barang')->nullable();
+            $table->string('tujuan_keluar')->nullable();
             $table->string('sn')->unique();
             $table->integer('jumlah');
             $table->string('satuan');
