@@ -48,9 +48,9 @@ class InventoryItemController extends Controller
     }
 
     public function store(Request $request)
-    {
-        try {
-            $validated = $request->validate([
+{
+    try {
+        $validated = $request->validate([
                 'kategori_input' => 'required|string',
                 'nama_barang' => 'required|string',
                 'nama_peminjam' => 'nullable|string',
@@ -71,33 +71,40 @@ class InventoryItemController extends Controller
                 'picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
                 'bukti' => 'nullable|file|mimes:pdf|max:2048',
                 'work_unit' => 'required|string',
-            ]);
+        ]);
 
-            if ($request->hasFile('picture')) {
-                $file = $request->file('picture');
-                $fileName = $file->getClientOriginalName(); // Gunakan nama file asli
-                $filePath = $file->storeAs('public/pictures', $fileName); // Simpan file dengan nama asli
-                $validated['picture'] = $fileName; // Simpan nama file asli di database
-            } else {
-                $validated['picture'] = null;
-            }
-
-            if ($request->hasFile('bukti')) {
-                $file = $request->file('bukti');
-                $fileName = $file->getClientOriginalName(); // Gunakan nama file asli
-                $file->storeAs('public/bukti', $fileName); // Simpan file dengan nama asli
-                $validated['bukti'] = $fileName; // Simpan nama file ke dalam field `bukti`
-            } else {
-                $validated['bukti'] = null; // Set field `bukti` to null if no file is uploaded
-            }
-    
-            $inventoryItem = InventoryItem::create($validated);
-    
-            return response()->json($inventoryItem, 201);
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+        if ($request->hasFile('picture')) {
+            $file = $request->file('picture');
+            $fileName = $file->getClientOriginalName(); // Gunakan nama file asli
+            $filePath = $file->storeAs('public/pictures', $fileName); // Simpan file dengan nama asli
+            $validated['picture'] = $fileName; // Simpan nama file asli di database
+        } else {
+            $validated['picture'] = null; // Set picture to null if not provided
         }
+
+        if ($request->hasFile('bukti')) {
+            $file = $request->file('bukti');
+            $fileName = $file->getClientOriginalName(); // Gunakan nama file asli
+            $filePath = $file->storeAs('public/bukti', $fileName); // Simpan file dengan nama asli
+            $validated['bukti'] = $fileName; 
+        
+            // Simpan nama file ke dalam JSON
+            $validated['bukti'] = json_encode($fileName);
+        } else {
+            $validated['bukti'] = json_encode(null); // Simpan null sebagai JSON jika tidak ada file
+        }        
+        
+
+        \Log::info('Validated Data:', $validated); // Logging data untuk debugging
+
+        $inventoryItem = InventoryItem::create($validated);
+
+        return response()->json($inventoryItem, 201);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
     }
+}
+
     // public function update(Request $request, $id)
     // {
     //     try {
