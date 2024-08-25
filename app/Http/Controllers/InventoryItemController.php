@@ -10,6 +10,12 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class InventoryItemController extends Controller
 {
+    public function replaceStr($str)
+    {
+        // Menghapus karakter '\' dan '/' dari string
+        return str_replace(['\\', '/'], '', $str);
+    }
+
     public function index()
     {
         return response()->json(InventoryItem::all());
@@ -73,6 +79,8 @@ class InventoryItemController extends Controller
                 'work_unit' => 'required|string',
         ]);
 
+        $linkDokumenFiles = [];
+
         if ($request->hasFile('picture')) {
             $file = $request->file('picture');
             $fileName = $file->getClientOriginalName(); // Gunakan nama file asli
@@ -84,15 +92,37 @@ class InventoryItemController extends Controller
 
         if ($request->hasFile('bukti')) {
             $file = $request->file('bukti');
-            $fileName = $file->getClientOriginalName(); // Gunakan nama file asli
-            $filePath = $file->storeAs('public/bukti', $fileName); // Simpan file dengan nama asli
-            $validated['bukti'] = $fileName; 
+            
+            $fileNameA = $file->getClientOriginalName();
+            $fileName = str_replace(' ', '_', $fileNameA);
+            $fileName = $this->replaceStr($fileName);
+            
+            $file->storeAs('public/bukti', $fileName);
+            
+            // Simpan nama file langsung sebagai string, bukan dalam array
+            $validated['bukti'] = $fileName;
+        }
         
-            // Simpan nama file ke dalam JSON
-            $validated['bukti'] = json_encode($fileName);
-        } else {
-            $validated['bukti'] = json_encode(null); // Simpan null sebagai JSON jika tidak ada file
-        }        
+
+        // if ($request->hasFile('bukti')) {
+        //     $file = $request->file('bukti');
+
+        //     //Logic yang Sebelumnya Dipakai
+        //     // $fileName = $file->getClientOriginalName(); // Gunakan nama file asli
+        //     // $filePath = $file->storeAs('public/bukti', $fileName); // Simpan file dengan nama asli
+        //     // $validated['bukti'] = $fileName;
+
+        //     $fileNameA = $file->getClientOriginalName();
+        //     $fileName = str_replace(' ', '_', $fileNameA); // Ambil nama file asli
+        //     $file->storeAs('public/bukti', $fileName); // Simpan file dengan nama asli
+        //     $linkDokumenFiles[] = $fileName; // Simpan nama file ke dalam array
+
+        
+        //     // Simpan nama file ke dalam JSON
+        //     $validated['bukti'] = json_encode($linkDokumenFiles);
+        // } else {
+        //     $validated['bukti'] = json_encode(null); // Simpan null sebagai JSON jika tidak ada file
+        // }
         
 
         \Log::info('Validated Data:', $validated); // Logging data untuk debugging
@@ -131,28 +161,50 @@ class InventoryItemController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $data = $request->all();
-            \Log::info('Request Data:', $data);
+            $validated = $request->all();
+            \Log::info('Request Data:', $validated);
 
             $inventoryItem = InventoryItem::findOrFail($id);
 
             // Jika ada file gambar yang diupload
+            // Jika ada file picture yang diupload
             if ($request->hasFile('picture')) {
                 $file = $request->file('picture');
-                $fileName = time() . '_' . $file->getClientOriginalName(); // Gunakan nama file dengan timestamp
-                $filePath = $file->storeAs('public/pictures', $fileName); // Simpan file dengan nama yang unik
-                $data['picture'] = $fileName;
+                $fileName = $file->getClientOriginalName(); // Gunakan nama file asli
+                $filePath = $file->storeAs('public/pictures', $fileName); // Simpan file ke storage
+                $validated['picture'] = $fileName;
+            } else {
+                // Jika tidak ada file picture yang diupload, gunakan gambar lama
+                $validated['picture'] = $inventoryItem->picture;
             }
-            
+
             if ($request->hasFile('bukti')) {
                 $file = $request->file('bukti');
-                $fileName = time() . '_' . $file->getClientOriginalName(); // Gunakan nama file dengan timestamp
-                $file->storeAs('public/bukti', $fileName); // Simpan file dengan nama yang unik
-                $data['bukti'] = $fileName;
+                
+                $fileNameA = $file->getClientOriginalName();
+                $fileName = str_replace(' ', '_', $fileNameA);
+                $fileName = $this->replaceStr($fileName);
+                
+                $file->storeAs('public/bukti', $fileName);
+                
+                // Simpan nama file langsung sebagai string, bukan dalam array
+                $validated['bukti'] = $fileName;
             }
+
+            // Jika ada file bukti yang diupload
+            // if ($request->hasFile('bukti')) {
+            //     $file = $request->file('bukti');
+            //     $fileName = $file->getClientOriginalName(); // Gunakan nama file asli
+            //     $file->storeAs('public/bukti', $fileName); // Simpan file ke storage
+            //     $validated['bukti'] = json_encode([$fileName]); // Simpan nama file ke dalam JSON
+            // } else {
+            //     // Jika tidak ada file bukti yang diupload, gunakan file bukti yang lama
+            //     $validated['bukti'] = $inventoryItem->bukti; 
+            // }
+
             
 
-            $inventoryItem->update($data);
+            $inventoryItem->update($validated);
             \Log::info('Updated Data:', $inventoryItem->toArray());
 
             return response()->json(['message' => 'Data berhasil diperbarui'], 200);
