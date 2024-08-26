@@ -125,7 +125,7 @@ class InventoryItemController extends Controller
         // }
         
 
-        \Log::info('Validated Data:', $validated); // Logging data untuk debugging
+        // \Log::info('Validated Data:', $validated); // Logging data untuk debugging
 
         $inventoryItem = InventoryItem::create($validated);
 
@@ -162,7 +162,7 @@ class InventoryItemController extends Controller
     {
         try {
             $validated = $request->all();
-            \Log::info('Request Data:', $validated);
+            // \Log::info('Request Data:', $validated);
 
             $inventoryItem = InventoryItem::findOrFail($id);
 
@@ -205,11 +205,11 @@ class InventoryItemController extends Controller
             
 
             $inventoryItem->update($validated);
-            \Log::info('Updated Data:', $inventoryItem->toArray());
+            // \Log::info('Updated Data:', $inventoryItem->toArray());
 
             return response()->json(['message' => 'Data berhasil diperbarui'], 200);
         } catch (\Exception $e) {
-            \Log::error('Update Error:', ['error' => $e->getMessage()]);
+            // \Log::error('Update Error:', ['error' => $e->getMessage()]);
             return response()->json(['error' => 'Terjadi kesalahan saat memperbarui data!'], 500);
         }
     }

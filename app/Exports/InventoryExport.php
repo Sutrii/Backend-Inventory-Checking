@@ -33,6 +33,9 @@ class InventoryExport implements FromCollection, WithHeadings
                 'Keterangan' => $item->keterangan,
                 'Unit Kerja' => $item->unitKerja,
                 'Lokasi' => $item->lokasi,
+                'Status Barang' => $item->status_barang,
+                'Solusi Barang' => $item->solusi_barang,
+                'Tujuan Keluar' => $item->tujuan_keluar,
             ];
         });
     }
@@ -61,6 +64,9 @@ class InventoryExport implements FromCollection, WithHeadings
             'Keterangan',
             'Unit Kerja',
             'Lokasi',
+            'Status Barang',
+            'Solusi Barang',
+            'Tujuan Keluar',
         ];
     }
 }
